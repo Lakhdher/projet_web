@@ -14,11 +14,7 @@ export class ClubController {
     return await this.clubService.create(createClubDto);
   }
 
-  @Get('myclubs')
-  @UseGuards(JwtAuthGuard)
-  async getMyClubs(@Req() req : Request) : Promise<ClubEntity[]> {
-    return await this.clubService.getMyClubs(req['user'].userId);
-  }
+
 
   @Get(':id/members')
   @UseGuards(JwtAuthGuard)

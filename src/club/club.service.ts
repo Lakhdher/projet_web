@@ -32,7 +32,19 @@ export class ClubService extends CommonService<ClubEntity> {
   async findByName(names: string): Promise<ClubEntity> {
     return await this.repository.findOneBy({ clubName: names });
   }
-  
+
+  async getMyClubs(userId: number): Promise<ClubEntity[]> {
+    const posts = await this.commiteePostRepository.createQueryBuilder("commitee_post")
+    .andWhere("commitee_post.committeeId = :id", { id: userId })
+    .leftJoinAndSelect("commitee_post.club", "club")
+    .getMany();
+    const clubs = [];
+    for (const post of posts) {
+      clubs.push(post.club);
+    }
+    return clubs;
+  }
+
 
   async findAllWithEvents(): Promise<ClubEntity[]> {
     return await this.repository.find({ relations: ["events"] });

@@ -7,13 +7,13 @@ import { CommiteePostEntity } from 'src/commitee-posts/entities/commitee-post.en
 import { CommiteeEntity } from 'src/commitee/entities/commitee.entity';
 import { MembershipEntity } from 'src/membership/entity/membership.entity';
 import { AuthEntity } from 'src/authentication/entities/auth.entity';
-import { UserService } from 'src/user/user.service';
 import { EventCommiteeEntity } from 'src/event_commitee/entities/event_commitee.entity';
 import { UserModule } from 'src/user/user.module';
+import { ClubResolver } from './club.resolver';
 
 @Module({
   controllers: [ClubController],
-  providers: [ClubService],
+  providers: [ClubService, ClubResolver],
   imports: [UserModule, TypeOrmModule.forFeature([ClubEntity, CommiteePostEntity, AuthEntity,EventCommiteeEntity, CommiteeEntity, MembershipEntity])],
   exports: [ClubService],
 })

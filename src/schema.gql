@@ -1,0 +1,58 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type ClubEntity {
+  clubName: String!
+  description: String!
+  email: String!
+  events: [EventEntity!]
+  posts: [CommiteePostEntity!]
+}
+
+type CommiteeEntity {
+  cin: String!
+  email: String!
+  enroll_num: String!
+  firstname: String!
+  lastname: String!
+  level: Int!
+  phone: String!
+  posts: [CommiteePostEntity!]
+  section: String!
+}
+
+type CommiteePostEntity {
+  club: ClubEntity!
+  committee: CommiteeEntity!
+  title: String!
+}
+
+type EventCommiteeEntity {
+  cin: String!
+  email: String!
+  enroll_num: String!
+  firstname: String!
+  lastname: String!
+  level: Int!
+  phone: String!
+  posts: [EventCommiteePostEntity!]
+  section: String!
+}
+
+type EventCommiteePostEntity {
+  committee: EventCommiteeEntity!
+  event: EventEntity!
+  title: String!
+}
+
+type EventEntity {
+  clubs: [ClubEntity!]
+  description: String!
+  posts: [EventCommiteePostEntity!]
+  title: String!
+}
+
+type Query {
+  clubs: [ClubEntity!]!
+}

@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CommonModule } from './common/common.module';
@@ -8,7 +8,6 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './user/entities/user.entity';
 import { AuthenticationModule } from './authentication/authentication.module';
-import { AuthenticationMiddleware } from './middlewares/auth.middleware';
 import { AuthEntity } from './authentication/entities/auth.entity';
 import { ClubModule } from './club/club.module';
 import { CommiteeModule } from './commitee/commitee.module';
@@ -24,6 +23,9 @@ import { EventCommiteePostEntity } from './event_commitee_posts/entities/event_c
 import { EventCommiteeEntity } from './event_commitee/entities/event_commitee.entity';
 import { MembershipModule } from './membership/membership.module';
 import { MembershipEntity } from './membership/entity/membership.entity';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { join } from 'path';
 
 
 dotenv.config();
@@ -42,6 +44,12 @@ dotenv.config();
     autoLoadEntities: true,
     synchronize: true,
   }),
+  GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      sortSchema: true,
+      installSubscriptionHandlers: true,
+  }),
   AuthenticationModule,
   ClubModule,
   CommiteeModule,
@@ -49,7 +57,7 @@ dotenv.config();
   EventCommiteeModule,
   EventModule,
   EventCommiteePostsModule,
-  MembershipModule
+  MembershipModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -28,6 +28,33 @@ type CommiteePostEntity {
   title: String!
 }
 
+input CreateClubInput {
+  clubName: String!
+  description: String
+  email: String!
+}
+
+input CreateEventInput {
+  clubs: [String!]!
+  description: String!
+  title: String!
+}
+
+input CreateUserInput {
+  cin: String!
+  email: String!
+  enroll_num: String!
+  firstname: String!
+  lastname: String!
+  level: Int!
+  phone: String!
+  section: String!
+}
+
+type CredentialsOutput {
+  access_token: String!
+}
+
 type EventCommiteeEntity {
   cin: String!
   email: String!
@@ -53,6 +80,81 @@ type EventEntity {
   title: String!
 }
 
+type Mutation {
+  create(createEventInput: CreateEventInput!): EventEntity!
+  createClub(createClubInput: CreateClubInput!): ClubEntity!
+  createUser(createUserInput: CreateUserInput!): UserEntity!
+  deleteClub(clubName: String, id: Int): ClubEntity!
+  deleteUser(id: Int!): UserEntity!
+  register(userSubscribeInput: UserSubscribeInput!): UserEntity!
+  removeMember(clubName: String, email: String!, id: Int): ClubEntity!
+  updateClub(clubName: String, id: Int, updateClubInput: UpdateClubInput!): ClubEntity!
+  updateUser(id: Int!, updateUserInput: UpdateUserInput!): UserEntity!
+}
+
 type Query {
   clubs: [ClubEntity!]!
+  delete(id: Int!): EventEntity!
+  events: [EventEntity!]!
+  findClubById(clubName: String, id: Int): ClubEntity!
+  findClubByName(clubName: String, id: Int): ClubEntity!
+  findOne(id: Int!): EventEntity!
+  getAllMembers(clubName: String, id: Int): [UserEntity!]!
+  getMyClubs: [ClubEntity!]!
+  joinClub(clubId: Int!): UserEntity!
+  login(email: String!, password: String!): CredentialsOutput!
+  myClubs: [ClubEntity!]!
+  myInfo: UserEntity!
+  update(id: Int!, updateEventInput: UpdateEventInput!): EventEntity!
+  user(id: Int!): UserEntity!
+  users: [UserEntity!]!
+}
+
+input UpdateClubInput {
+  description: String
+  email: String
+}
+
+input UpdateEventInput {
+  clubs: [String!]
+  description: String!
+  title: String!
+}
+
+input UpdateUserInput {
+  cin: String
+  email: String
+  enroll_num: String
+  firstname: String
+  lastname: String
+  level: Int
+  phone: String
+  section: String
+}
+
+type UserEntity {
+  cin: String!
+  email: String!
+  enroll_num: String!
+  firstname: String!
+  lastname: String!
+  level: Int!
+  phone: String!
+  section: String!
+}
+
+input UserSubscribeInput {
+  cin: String!
+  club: String
+  email: String!
+  enroll_num: String!
+  event: String
+  firstname: String!
+  lastname: String!
+  level: Int!
+  password: String!
+  phone: String!
+  post: String
+  role: String
+  section: String!
 }

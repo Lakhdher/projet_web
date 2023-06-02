@@ -14,6 +14,7 @@ import { EventCommiteePostEntity } from 'src/event_commitee_posts/entities/event
 import { EventEntity } from 'src/event/entities/event.entity';
 import { ClubEntity } from 'src/club/entities/club.entity';
 import { JwtStrategy } from './strategy/jwt.strategy';
+import { AuthenticationResolver } from './authentication.resolver';
 
 dotenv.config()
 @Module({
@@ -21,6 +22,6 @@ dotenv.config()
   imports: [TypeOrmModule.forFeature([AuthEntity, UserEntity, CommiteeEntity, EventCommiteeEntity, CommiteePostEntity, EventCommiteePostEntity, EventEntity, ClubEntity]),
   PassportModule.register({defaultStrategy: 'jwt'}),
   JwtModule.register({ secret: process.env.JWT_SECRET , signOptions: { expiresIn: '1h' }})],
-  providers: [AuthenticationService, JwtStrategy],
+  providers: [AuthenticationService, JwtStrategy, AuthenticationResolver],
 })
 export class AuthenticationModule {}

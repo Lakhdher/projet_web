@@ -1,13 +1,14 @@
 import { ClubEntity } from "./entities/club.entity";
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { ClubService } from "./club.service";
-import { GQLUser } from "src/authentication/decorators/user.decorator";
+// import { GQLUser } from "src/authentication/decorators/user.decorator";
 import { GQLJwtAuthGuard } from "src/authentication/guards/gql.jwt.guard";
 import { Req, UseGuards } from "@nestjs/common";
 import { GetClubArgs } from "./dto/args/get-club.args";
 import { UserEntity } from "src/user/entities/user.entity";
 import { CreateClubInput } from "./dto/inputs/create-club.inputs";
 import { UpdateClubInput } from "./dto/inputs/update-club.input";
+import { GQLreq } from "src/authentication/decorators/user.decorator";
 @Resolver(()=>ClubEntity)
 export class ClubResolver {
 
@@ -23,9 +24,9 @@ export class ClubResolver {
     @UseGuards(GQLJwtAuthGuard)
     @Query(()=>[ClubEntity])
     async getMyClubs(
-        @GQLUser() user
+        @GQLreq() req
     ){
-        return this.clubService.getMyClubs(user.userId);
+        return this.clubService.getMyClubs(req.user.userId);
     }
 
     // Get a club by name
@@ -45,7 +46,7 @@ export class ClubResolver {
     @UseGuards(GQLJwtAuthGuard)
     async getAllMembers(
         @Args() getClubArgs: GetClubArgs,
-        @Req() req: Request
+        @GQLreq() req: Request
         ){
         let club;
         if (getClubArgs.id === undefined){
@@ -83,7 +84,7 @@ export class ClubResolver {
     async removeMember(
         @Args() getClubArgs: GetClubArgs,
         @Args('email') email: string,
-        @Req() req: Request
+        @GQLreq() req: Request
         ){
         return this.clubService.removeMember(getClubArgs.id, email, req['user']);
     }

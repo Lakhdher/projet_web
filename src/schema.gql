@@ -81,8 +81,8 @@ type EventEntity {
 }
 
 type Mutation {
-  create(createEventInput: CreateEventInput!): EventEntity!
   createClub(createClubInput: CreateClubInput!): ClubEntity!
+  createEvent(createEventInput: CreateEventInput!): EventEntity!
   createUser(createUserInput: CreateUserInput!): UserEntity!
   deleteClub(clubName: String, id: Int): ClubEntity!
   deleteUser(id: Int!): UserEntity!

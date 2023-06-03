@@ -6,6 +6,7 @@ import { Req, UseGuards } from "@nestjs/common";
 import { CreateUserInput } from "./dto/inputs/create-user.input";
 import { UpdateUserInput } from "./dto/inputs/update-user.input";
 import { GQLJwtAuthGuard } from "src/authentication/guards/gql.jwt.guard";
+import { GQLreq } from "src/authentication/decorators/user.decorator";
 
 @Resolver(() => UserEntity)
 export class UserResolver {
@@ -23,7 +24,7 @@ export class UserResolver {
     @Query(() => [ClubEntity])
     @UseGuards(GQLJwtAuthGuard)
     async myClubs(
-        @Req() req : Request
+        @GQLreq() req : Request
     ) {
         return await this.userService.getMyClubs(req["user"]);
     }
@@ -32,7 +33,7 @@ export class UserResolver {
     @Query(() => UserEntity)
     @UseGuards(GQLJwtAuthGuard)
     async myInfo(
-        @Req() req : Request
+        @GQLreq() req : Request
     ) {
         return await this.userService.getMyInfo(req["user"]);
     }
@@ -41,7 +42,7 @@ export class UserResolver {
     @Query(() => UserEntity)
     @UseGuards(GQLJwtAuthGuard)
     async joinClub(
-        @Req() req : Request,
+        @GQLreq() req : Request,
         @Args('clubId',{type: ()=> Int}) clubId: number,
     ) {
         return await this.userService.joinClub(req["user"], clubId);

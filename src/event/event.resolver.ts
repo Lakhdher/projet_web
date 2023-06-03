@@ -2,10 +2,11 @@ import { Args, Int, Mutation, Query, Resolver, Subscription } from "@nestjs/grap
 import { EventService } from "./event.service";
 import { EventEntity } from "./entities/event.entity";
 import { UpdateEventInput } from "./dto/inputs/update-event.input";
-import { Inject, Req, UseGuards } from "@nestjs/common";
+import { Inject, UseGuards } from "@nestjs/common";
 import { GQLJwtAuthGuard } from "src/authentication/guards/gql.jwt.guard";
 import { CreateEventInput } from "./dto/inputs/create-event.input";
 import { PubSub } from "graphql-subscriptions";
+import { GQLreq } from "src/authentication/decorators/user.decorator";
 
 @Resolver(()=>EventEntity)
 export class EventResolver{
@@ -18,7 +19,7 @@ export class EventResolver{
     @UseGuards(GQLJwtAuthGuard)
     async createEvent(
         @Args('createEventInput') createEventInput: CreateEventInput,
-        @Req() req: Request
+        @GQLreq() req: Request
       ) {
       const event = await this.eventService.create_v2(createEventInput, req['user']);
       this.pubSub.publish('eventAdded', { eventAdded: event });

@@ -110,6 +110,11 @@ type Query {
   users: [UserEntity!]!
 }
 
+type Subscription {
+  subscribeToEventByClubName(clubName: String!): EventEntity!
+  subscribeToEventById(id: Int!): EventEntity!
+}
+
 input UpdateClubInput {
   description: String
   email: String

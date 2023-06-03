@@ -9,10 +9,17 @@ import { CommiteePostEntity } from 'src/commitee-posts/entities/commitee-post.en
 import { EventCommiteeEntity } from 'src/event_commitee/entities/event_commitee.entity';
 import { EventCommiteePostEntity } from 'src/event_commitee_posts/entities/event_commitee_post.entity';
 import { EventResolver } from './event.resolver';
-
+import { PubSub } from 'graphql-subscriptions';
 @Module({
   controllers: [EventController],
-  providers: [EventService,EventResolver],
+  providers: [
+    EventService,
+    EventResolver,
+    {
+      provide: 'PUB_SUB',
+      useValue: new PubSub(),
+      },
+    ],
   imports: [TypeOrmModule.forFeature([EventEntity, CommiteeEntity, CommiteePostEntity, EventCommiteeEntity, EventCommiteePostEntity]), ClubModule],
 })
 export class EventModule {}
